@@ -80,6 +80,7 @@ landing_zone --> bronze (raw data) --> silver (clean data) --> gold (enriched da
 
 ETL logic has been configure in order to place all layers under a specific path representing the environment where we are supposed to work. For instance:
 
+```
 nonprod
 | -- landing_zone
 | -- bronze
@@ -91,7 +92,7 @@ preprod
 | -- bronze
 | -- silver
 | -- gold
-
+```
 
 *represented as CSV file, just for assignment needs
 
