@@ -167,6 +167,7 @@ O(10^2) partitions.
 
 Is it possible to submit the ETL to a Spark cluster following the command below:
 
+```
 spark-submit \
 --packages io.delta:delta-core_2.12:2.2.0 \
 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
@@ -174,9 +175,11 @@ spark-submit \
 --py-files dependencies-1.0.0-202302130338.zip \
 JobRunner.py \
 --conf-file bronze_etl_samples.json
+```
 
 or adding dates parameter
 
+```
 spark-submit \
 --packages io.delta:delta-core_2.12:2.2.0 \
 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
@@ -185,6 +188,7 @@ spark-submit \
 JobRunner.py \
 --conf-file bronze_etl_samples.json \
 --dates 2021-04-03 2021-04-02
+```
 
 Just be sure to specify the queries' location absolute path within JSON conf file.
 
