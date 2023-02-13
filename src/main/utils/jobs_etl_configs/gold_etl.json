@@ -1,0 +1,42 @@
+{
+    "spark_session" : {
+        "config": {
+            "spark.sql.extensions":"io.delta.sql.DeltaSparkSessionExtension",
+            "spark.sql.catalog.spark_catalog": "org.apache.spark.sql.delta.catalog.DeltaCatalog"
+        },
+    
+        "app_name": "gold_etl",    
+        "master": "local[*]"
+    },
+
+    "env": "nonprod",
+    
+    "extract": {
+        "options": {
+            "basePath": "test/{ENV}/silver/samples/"
+        },
+        "source_partition": "timestamp",
+        "format": "delta",
+        "load": "test/{ENV}/silver/samples/"
+
+    },
+
+    "transform": {
+        "sql": "main/utils/queries/gold_etl.sql"
+    
+    },
+
+    "load": {
+        "format": "delta",
+        "mode": "merge",
+        "merge_conditions": {
+            "device": "device",
+            "detailed_timestamp": "detailed_timestamp"
+        },
+        "load_path": "test/{ENV}/gold/samples_devices/",
+        "partitions": ["month", "area"]
+    }
+
+    
+
+}

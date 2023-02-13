@@ -1,0 +1,42 @@
+{
+    "spark_session" : {
+        "config": {
+            "spark.sql.extensions":"io.delta.sql.DeltaSparkSessionExtension",
+            "spark.sql.catalog.spark_catalog": "org.apache.spark.sql.delta.catalog.DeltaCatalog"
+        },
+    
+        "app_name": "silver_etl",    
+        "master": "local[*]"
+    },
+
+    "env": "nonprod",
+    
+    "extract": {
+        "options": {
+            "basePath": "test/{ENV}/bronze/samples/"
+        },
+        "source_partition": "received",
+        "format": "delta",
+        "load": "test/{ENV}/bronze/samples/"
+
+    },
+
+    "transform": {
+        "sql": "main/utils/queries/silver_etl.sql"
+    
+    },
+
+    "load": {
+        "format": "delta",
+        "mode": "merge",
+        "merge_conditions": {
+            "device": "device",
+            "detailed_timestamp": "detailed_timestamp"
+        },
+        "load_path": "test/{ENV}/silver/samples/",
+        "partitions": ["timestamp"] 
+    }
+
+    
+
+}

@@ -1,0 +1,36 @@
+{
+
+    "spark_session" : {
+        "config": {
+            "spark.sql.extensions":"io.delta.sql.DeltaSparkSessionExtension",
+            "spark.sql.catalog.spark_catalog": "org.apache.spark.sql.delta.catalog.DeltaCatalog"
+        },
+    
+        "app_name": "bronze_etl_devices",    
+        "master": "local[*]"
+    },
+
+    "env": "nonprod",
+    
+    "extract": {
+        "options": {
+            "basePath": "test/{ENV}/landing_zone/devices/",
+            "schema": "StructType([StructField('code', StringType(), False), StructField('type', StringType(), True), StructField('area', StringType(), True),  StructField('customer', StringType(), True)])"
+        },
+        "format": "parquet",
+        "load": "test/{ENV}/landing_zone/devices/"
+
+    },
+
+    "load": {
+        "format": "delta",
+        "mode": "merge",
+        "load_path": "test/{ENV}/bronze/devices/",
+        "merge_conditions": {
+            "code": "code"
+        }
+    }
+
+    
+
+}

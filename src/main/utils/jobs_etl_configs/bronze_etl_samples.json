@@ -1,0 +1,41 @@
+{
+    "spark_session" : {
+        "config": {
+            "spark.sql.extensions":"io.delta.sql.DeltaSparkSessionExtension",
+            "spark.sql.catalog.spark_catalog": "org.apache.spark.sql.delta.catalog.DeltaCatalog"
+        },
+    
+        "app_name": "bronze_etl_samples",    
+        "master": "local[*]"
+    },
+
+    "env": "nonprod",
+    
+    "extract": {
+        "options": {
+            "basePath": "test/{ENV}/landing_zone/data/",
+            "schema": "StructType([StructField('CO2_level', LongType(), True), StructField('device', StringType(), False), StructField('humidity', LongType(), True),  StructField('temperature', LongType(), True), StructField('timestamp', StringType(), False), StructField('received', DateType(), False)])"
+        },
+        "source_partition": "received",
+        "format": "json",
+        "load": "test/{ENV}/landing_zone/data/"
+
+    },
+
+    "transform": {
+        "sql": "main/utils/queries/bronze_etl_samples.sql"
+    },
+
+    "load": {
+        "format": "delta",
+        "mode": "overwrite",
+        "load_path": "test/{ENV}/bronze/samples/",
+        "options": {
+            "partitionOverwriteMode": "dynamic"
+        },
+        "partitions": ["received"] 
+    }
+
+    
+
+}
