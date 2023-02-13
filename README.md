@@ -20,9 +20,9 @@ Each jobs_etl_configs file configures a specific ETL job providing:
 - spark session conf
 - environment
 - specific configurations for each step of the ETL Job:
---- Extract: provides source path, format, and other reading options
---- Transform (not mandatory): provides the absolute location of a SQL query containing the transform operations logic
---- Load: provides target path, format, possible definition of partitions, and other writing options
+1. Extract: provides source path, format, and other reading options
+2. Transform (not mandatory): provides the absolute location of a SQL query containing the transform operations logic
+3. Load: provides target path, format, possible definition of partitions, and other writing options
 
 The JSON conf file must be passed as parameter "--conf-file some_etl_job.json" to the main class application's.
 
@@ -31,10 +31,10 @@ root/src/main/utils/JobConfigurer.py
 
 This class contains a possible abstarction of an ETL task and is organised in order to provide:
 - a useful global access for some key variables, such as:
---- a dictionary derived from the JSON conf file
---- the environment target of the application
---- a dictionary derived from possible parmaters passed to the main class 
------- all these variables are defined by the class constructor
+1. a dictionary derived from the JSON conf file
+2. the environment target of the application
+3. a dictionary derived from possible parmaters passed to the main class 
+4. all these variables are defined by the class constructor
 - a SparkSession object built according to the configurations got from the JSON file
 - ETL methods (Extract, Transform and Load) configurable using the information deifined in the JSON file
 
@@ -108,7 +108,7 @@ This ETL:
 - creates a new column "detailed_timestamp" as result of timestamp string columns parsing
 - casts timestamp column as date, "detailed_timestamp" column holds the original information, this column will make easier some following operations such as the cleaning steps
 - writes the result as a delta table, partitioned by received field, in the bronze layer
---- write operation follows a dynamic partitionOverwriteMode allowing to possibly "fix" landing_zone's data 
+1. write operation follows a dynamic partitionOverwriteMode allowing to possibly "fix" landing_zone's data 
 
 An optional argument --dates ${a list of dates yyyy-mm-dd} can be passed in order to execute a partition pruning on landing zone data
 
@@ -117,7 +117,7 @@ An optional argument --dates ${a list of dates yyyy-mm-dd} can be passed in orde
 This ETL: 
 - reads samples data from bronze layer
 - executes cleaning steps on data
---- deduplicates data and discards any sample which are received more than one day after they are acquired
+1. deduplicates data and discards any sample which are received more than one day after they are acquired
 - writes the result as a delta table in the silver layer following an UPSERT strategy
 - final data are partitioned by "timestamp" column in order to optimize some specific queries
 
@@ -206,9 +206,9 @@ landing_zone --> {--dates} Glue Bronze ETL--> SNS {--dates} --> Lambda --> Glue 
 At this stage of developments the main limits are represented by the following points:
 
 1 - ETL Steps defined as python code in the Superclass JobConfigurer can't handle a big number of cases
---- Adding new logic as python code in order to handle more complex jobs possibilities could lead to create Boilerplate code and poor maintainable classes
---- It's possible to override the ETL superclass method but it would decrease configurability of the application
---- So the best thing i can do i my opinion is to move the python code logic to a SQL query
+- Adding new logic as python code in order to handle more complex jobs possibilities could lead to create Boilerplate code and poor maintainable classes
+- It's possible to override the ETL superclass method but it would decrease configurability of the application
+- So the best thing i can do i my opinion is to move the python code logic to a SQL query
 
 2 - JSON ETL conf file should be written in a more fitting format including SQL queries directly within the file in order to compact the ETL instrusction in a single location
 
