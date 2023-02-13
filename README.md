@@ -213,7 +213,7 @@ At this stage of developments the main limits are represented by the following p
 1 - ETL Steps defined as python code in the Superclass JobConfigurer can't handle a big number of cases
 - Adding new logic as python code in order to handle more complex jobs possibilities could lead to create Boilerplate code and poor maintainable classes
 - It's possible to override the ETL superclass method but it would decrease configurability of the application
-- So the best thing i can do i my opinion is to move the python code logic to a SQL query
+- So the best thing i can do in my opinion is to move the python code logic to a SQL query for the ETL steps
 
 2 - JSON ETL conf file should be written in a more fitting format including SQL queries directly within the file in order to compact the ETL instrusction in a single location
 
