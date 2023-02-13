@@ -24,10 +24,6 @@ class JobConfigurer:
       self.conf_dict = json.load(config_file)
       self.env = self.conf_dict["env"]
 
-  def set_env_path(self, path):
-    path = path.replace("{ENV}", self.env)
-    return path
-
   # building SparkSession object
   def get_spark_session(self):  
 
@@ -51,8 +47,8 @@ class JobConfigurer:
 
     extract = self.conf_dict["extract"]
     options = extract["options"]
-    options["basePath"] = self.set_env_path(options["basePath"])
-    load_path = self.set_env_path(extract["load"])
+    options["basePath"] = set_env_path(options["basePath"], self.env)
+    load_path = set_env_path(extract["load"], self.env)
 
     
     if "dates" in self.args and self.args["dates"]:
@@ -89,7 +85,7 @@ class JobConfigurer:
   
   def load(self, spark, df_transformed):
     load = self.conf_dict["load"]
-    load_path = self.set_env_path(load["load_path"])
+    load_path = set_env_path(load["load_path"], self.env)
 
     if load["format"] == "delta":
       if load["mode"] == "merge":
