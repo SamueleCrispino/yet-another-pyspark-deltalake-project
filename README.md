@@ -3,9 +3,9 @@
 This repository contains an example of pyspark delta-lake ETL configurable using appropriate json files
 
 ### Project Intro
-The first version of this project was composed by a specific number of pyspark job, one for each ETL operation needed according to assignment requirements. I've left one of that job in the root/old_version_example/ folder.
+The first version of this project was composed by a specific number of pyspark job, one for each ETL operation needed according to assignment requirements. I've left one of them job in the root/old_version_example/ folder.
 
-After the first version my my efforts have been aimed at trying to abstract the etl operations as much as possible in order to obtain a single main class that can be configured in a "light" way through json files passed as an argument.
+After the first version my efforts have been aimed at trying to abstract the etl operations as much as possible in order to obtain a single main class that can be configured in a "light" way through json files passed as an argument.
 
 This kind of work have increased considerably the complexity of the whole project so i apologize in advance 
 if there are some logic options still not well handled.
